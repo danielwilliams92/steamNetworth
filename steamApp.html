@@ -1,0 +1,53 @@
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+
+<body>
+    <div id="caseFeed">
+    </div>
+</body>
+
+
+
+<script>
+    
+    
+    var myInt;
+    var jsonObj;
+    var jsonObjArray=[];
+    var caseArray=[];
+    var winterCaseCount=0;
+    
+$.getJSON('https://cors-anywhere.herokuapp.com/https://steamcommunity.com/profiles/76561197999579751/inventory/json/730/2', function(data) {
+    
+    
+    jsonObj = data.rgInventory;
+    
+    // gets all id key's in json object
+    for (x in jsonObj){
+        jsonObjArray.push(x);
+    }
+    
+    for (var i=0; i<jsonObjArray.length; i++){
+        if(data.rgInventory[jsonObjArray[i]].classid == '384801283'){
+            winterCaseCount=winterCaseCount+1;
+        }
+    }
+     document.getElementById("caseFeed").innerHTML = "Amount of cases: "+ winterCaseCount;
+     catchPrice();
+    
+});
+
+    function catchPrice() {
+        var strReplace;
+        var array = [];
+        var bleek;
+        $.get("https://cors-anywhere.herokuapp.com/https://steamcommunity.com/market/priceoverview/?currency=1&appid=730&market_hash_name=eSports%202013%20Winter%20Case", function(data) {
+            bleek=data;
+            document.getElementById("caseFeed").innerHTML = "eSports 2013 Winter Case: "+ bleek.lowest_price +"<br>Amount of cases:"+winterCaseCount+"<br><br>Total Worth: $"+parseInt(bleek.lowest_price.replace("$","")*parseFloat(winterCaseCount));
+        });
+        
+    };
+</script>
